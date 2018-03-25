@@ -101,6 +101,9 @@ struct ngx_http_cache_s {
 
     ngx_msec_t                       lock_timeout;
     ngx_msec_t                       lock_age;
+    ngx_msec_t                       lock_timer;
+    ngx_msec_t                       lock_timer_step;
+    ngx_msec_t                       lock_timer_max;
     ngx_msec_t                       lock_time;
     ngx_msec_t                       wait_time;
 

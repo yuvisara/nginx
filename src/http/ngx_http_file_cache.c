@@ -450,7 +450,7 @@ ngx_http_file_cache_lock(ngx_http_request_t *r, ngx_http_cache_t *c)
 
     timer = c->wait_time - now;
 
-    ngx_add_timer(&c->wait_event, (timer > 500) ? 500 : timer);
+    ngx_add_timer(&c->wait_event, (timer > c->lock_timer) ? c->lock_timer : timer);
 
     r->main->blocked++;
 
@@ -509,8 +509,13 @@ ngx_http_file_cache_lock_wait(ngx_http_request_t *r, ngx_http_cache_t *c)
 
     ngx_shmtx_unlock(&cache->shpool->mutex);
 
+    c->lock_timer += c->lock_timer_step;
+    if(c->lock_timer > c->lock_timer_max) {
+    	c->lock_timer = c->lock_timer_max;
+    }
+    
     if (wait) {
-        ngx_add_timer(&c->wait_event, (timer > 500) ? 500 : timer);
+        ngx_add_timer(&c->wait_event, (timer > c->lock_timer) ? c->lock_timer : timer);
         return;
     }
 
