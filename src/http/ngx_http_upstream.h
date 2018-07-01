@@ -202,6 +202,9 @@ typedef struct {
     ngx_flag_t                       cache_lock;
     ngx_msec_t                       cache_lock_timeout;
     ngx_msec_t                       cache_lock_age;
+    ngx_msec_t                       cache_lock_timer_min;
+    ngx_msec_t                       cache_lock_timer_step;
+    ngx_msec_t                       cache_lock_timer_max;
 
     ngx_flag_t                       cache_revalidate;
     ngx_flag_t                       cache_convert_head;
